@@ -1,17 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import counterReducer from "./counter";
+import notesReducer from "./notes";
 
 const store = configureStore({
   reducer: {
     counter: counterReducer,
+    notes: notesReducer,
   },
 });
 
-export type AppState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+type AppState = ReturnType<typeof store.getState>;
+type AppDispatch = typeof store.dispatch;
 
-export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 export default store;
