@@ -1,5 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../store";
 import { decrement, increment, setValue } from "../store/counter";
+import "../less/counter.less";
 
 const Counter = () => {
   const counter = useAppSelector((state) => state.counter.value);
@@ -18,12 +19,18 @@ const Counter = () => {
   };
 
   return (
-    <div>
+    <div className="counter-container">
       <p>Counter: {counter}</p>
-      <div>
-        <span onClick={handleIncrementBtnClick}>+</span>
-        <span onClick={handleDecrementBtnClick}>-</span>
-        <span onClick={handleResetBtnClick}>/</span>
+      <div className="btns-container">
+        <span className="action-btn" onClick={handleIncrementBtnClick}>
+          +
+        </span>
+        <span className="action-btn" onClick={handleDecrementBtnClick}>
+          -
+        </span>
+        <span className="action-btn" onClick={handleResetBtnClick}>
+          /
+        </span>
       </div>
     </div>
   );
