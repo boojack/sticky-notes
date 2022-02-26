@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getTestNotes } from "./test";
 
 interface NotesState {
   notes: Note[];
 }
 
 const initialState: NotesState = {
-  notes: [],
+  notes: getTestNotes(),
 };
 
 export const notesSlice = createSlice({

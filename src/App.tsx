@@ -1,17 +1,12 @@
 import { useEffect } from "react";
-import Counter from "./components/Counter";
+import Dashboard from "./components/Dashboard";
 
 const App = () => {
   useEffect(() => {
     // do nth
   }, []);
 
-  return (
-    <div>
-      <p className="text-3xl">Hello sticky notes!</p>
-      <Counter />
-    </div>
-  );
+  return <Dashboard />;
 };
 
 export default App;
