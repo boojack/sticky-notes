@@ -1,7 +1,17 @@
 .sticky-card-wrapper {
-  @apply absolute flex flex-col justify-start items-start shadow border rounded p-2 z-10;
+  @apply absolute flex flex-col justify-start items-start shadow border rounded z-10 select-none;
+  /* could be custome later */
+  @apply bg-white;
+
+  > .tool-bar-container {
+    @apply w-full flex flex-row justify-end items-center;
+
+    > .btn {
+      @apply text-xs px-1 rounded text-gray-400 cursor-pointer hover:shadow-inner;
+    }
+  }
 
   > .editor {
-    @apply outline-none;
+    @apply p-1 pt-0 text-sm outline-none resize;
   }
 }

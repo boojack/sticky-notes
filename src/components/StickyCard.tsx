@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useAppDispatch } from "../store";
-import { updateNoteById } from "../store/notes";
+import { updateNoteById, deleteNoteById } from "../store/notes";
 import "../less/sticky-card.less";
 
 interface Props {
@@ -15,40 +15,25 @@ const StickyCard: React.FC<Props> = (props) => {
     // do nth
   }, []);
 
-  const handleStickyCardDoubleClick = (event: React.MouseEvent) => {
+  const handleStickyCardDoubleClick = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
-  };
+  }, []);
 
-  const handleContentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    dispatch(
-      updateNoteById({
-        id: note.id,
-        note: {
-          ...note,
-          content: event.target.value,
-          updatedTs: Date.now(),
-        },
-      })
-    );
-  };
-
-  const handleStickyCardMouseDown = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleStickyCardMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
     const cardEl = event.currentTarget;
-    let shiftX = event.clientX - cardEl.getBoundingClientRect().left;
-    let shiftY = event.clientY - cardEl.getBoundingClientRect().top;
+    const shiftX = event.clientX - cardEl.getBoundingClientRect().left;
+    const shiftY = event.clientY - cardEl.getBoundingClientRect().top;
 
-    const moveAt = (pageX: number, pageY: number) => {
-      cardEl.style.left = pageX - shiftX + "px";
-      cardEl.style.top = pageY - shiftY + "px";
+    const handleMouseMove = (event: MouseEvent) => {
       dispatch(
         updateNoteById({
           id: note.id,
           note: {
             ...note,
             position: {
-              x: pageX - shiftX,
-              y: pageY - shiftY,
+              x: event.pageX - shiftX,
+              y: event.pageY - shiftY,
             },
             updatedTs: Date.now(),
           },
@@ -56,16 +41,11 @@ const StickyCard: React.FC<Props> = (props) => {
       );
     };
 
-    const onMouseMove = (event: MouseEvent) => {
-      moveAt(event.pageX, event.pageY);
-    };
-
-    cardEl.addEventListener("mousemove", onMouseMove);
-
+    cardEl.addEventListener("mousemove", handleMouseMove);
     cardEl.addEventListener(
       "mouseup",
       () => {
-        cardEl.removeEventListener("mousemove", onMouseMove);
+        cardEl.removeEventListener("mousemove", handleMouseMove);
       },
       {
         once: true,
@@ -74,13 +54,37 @@ const StickyCard: React.FC<Props> = (props) => {
     cardEl.addEventListener(
       "mouseleave",
       () => {
-        cardEl.removeEventListener("mousemove", onMouseMove);
+        cardEl.removeEventListener("mousemove", handleMouseMove);
       },
       {
         once: true,
       }
     );
-  };
+  }, []);
+
+  const handleEditorMouseDown = useCallback((event) => {
+    event.stopPropagation();
+  }, []);
+
+  const handleEditorContentChange = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      dispatch(
+        updateNoteById({
+          id: note.id,
+          note: {
+            ...note,
+            content: event.target.value,
+            updatedTs: Date.now(),
+          },
+        })
+      );
+    },
+    [note]
+  );
+
+  const handleDeleteBtnClick = useCallback(() => {
+    dispatch(deleteNoteById(note.id));
+  }, [note]);
 
   return (
     <div
@@ -89,7 +93,17 @@ const StickyCard: React.FC<Props> = (props) => {
       onMouseDown={handleStickyCardMouseDown}
       onDoubleClick={handleStickyCardDoubleClick}
     >
-      <textarea className="editor" onChange={handleContentChange} defaultValue={note.content}></textarea>
+      <div className="tool-bar-container">
+        <span className="btn" onClick={handleDeleteBtnClick}>
+          Delete
+        </span>
+      </div>
+      <textarea
+        className="editor"
+        defaultValue={note.content}
+        onMouseDown={handleEditorMouseDown}
+        onChange={handleEditorContentChange}
+      ></textarea>
     </div>
   );
 };

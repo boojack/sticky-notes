@@ -30,9 +30,14 @@ export const notesSlice = createSlice({
       }
       state.notes = [...state.notes];
     },
+    // delete note by id
+    deleteNoteById: (state, action: PayloadAction<UUID>) => {
+      const temp = state.notes.filter((note) => note.id !== action.payload);
+      state.notes = [...temp];
+    },
   },
 });
 
-export const { addNote, updateNoteById } = notesSlice.actions;
+export const { addNote, updateNoteById, deleteNoteById } = notesSlice.actions;
 
 export default notesSlice.reducer;
