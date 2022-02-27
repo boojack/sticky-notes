@@ -36,7 +36,7 @@ const Dashboard = () => {
     <div className="dashboard-wrapper" onMouseMove={handleDashBoardMouseMove} onDoubleClick={handleDashBoardDoubleClick}>
       <p className="text-3xl">Hello sticky notes!</p>
       {notes.map((note) => {
-        return <StickyCard key={note.id} note={note} />;
+        return <StickyCard key={`${note.id}`} note={note} />;
       })}
     </div>
   );

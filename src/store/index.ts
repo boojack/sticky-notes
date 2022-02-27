@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import counterReducer from "./counter";
 import notesReducer from "./notes";
 
 const store = configureStore({
   reducer: {
-    counter: counterReducer,
     notes: notesReducer,
   },
 });
