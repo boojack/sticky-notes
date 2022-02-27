@@ -108,10 +108,12 @@ const StickyCard: React.FC<Props> = (props) => {
       onMouseDown={handleStickyCardMouseDown}
       onDoubleClick={handleStickyCardDoubleClick}
     >
-      <div className="tool-bar-container">
-        <span className="btn" onClick={handleDeleteBtnClick}>
-          Delete
-        </span>
+      <div className="header-container">
+        <div className="btns-container">
+          <span className="btn delete-btn" onClick={handleDeleteBtnClick}>
+            Delete
+          </span>
+        </div>
       </div>
       <textarea
         style={{ width: note.bounding.width, height: note.bounding.height }}
