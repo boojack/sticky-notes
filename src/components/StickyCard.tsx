@@ -21,9 +21,9 @@ const StickyCard: React.FC<Props> = (props) => {
   }, []);
 
   const handleStickyCardMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    const cardEl = event.currentTarget;
-    const shiftX = event.clientX - cardEl.getBoundingClientRect().left;
-    const shiftY = event.clientY - cardEl.getBoundingClientRect().top;
+    const { left, top } = event.currentTarget.getBoundingClientRect();
+    const shiftX = event.clientX - left;
+    const shiftY = event.clientY - top;
 
     const handleMouseMove = (event: MouseEvent) => {
       dispatch(
@@ -41,20 +41,11 @@ const StickyCard: React.FC<Props> = (props) => {
       );
     };
 
-    cardEl.addEventListener("mousemove", handleMouseMove);
-    cardEl.addEventListener(
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener(
       "mouseup",
       () => {
-        cardEl.removeEventListener("mousemove", handleMouseMove);
-      },
-      {
-        once: true,
-      }
-    );
-    cardEl.addEventListener(
-      "mouseleave",
-      () => {
-        cardEl.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mousemove", handleMouseMove);
       },
       {
         once: true,
