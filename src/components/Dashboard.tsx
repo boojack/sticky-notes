@@ -34,7 +34,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-wrapper" onMouseMove={handleDashBoardMouseMove} onDoubleClick={handleDashBoardDoubleClick}>
-      <p className="text-3xl">Double-click any blank space</p>
+      <p className="hint-text">New card with just double-click any blank space</p>
       {notes.map((note) => {
         return <StickyCard key={`${note.id}`} note={note} />;
       })}
