@@ -41,7 +41,7 @@ export const notesSlice = createSlice({
   reducers: {
     // add note to notes
     addNote: (state, action: PayloadAction<Note>) => {
-      state.notes = [...state.notes, action.payload];
+      state.notes = [...state.notes, action.payload].sort((a, b) => a.updatedTs - b.updatedTs);
     },
     // update note by id
     updateNoteById: (state, action: PayloadAction<updateNoteById>) => {
@@ -52,12 +52,12 @@ export const notesSlice = createSlice({
           ...action.payload.note,
         };
       }
-      state.notes = [...state.notes];
+      state.notes = [...state.notes].sort((a, b) => a.updatedTs - b.updatedTs);
     },
     // delete note by id
     deleteNoteById: (state, action: PayloadAction<UUID>) => {
       const temp = state.notes.filter((note) => note.id !== action.payload);
-      state.notes = [...temp];
+      state.notes = [...temp].sort((a, b) => a.updatedTs - b.updatedTs);
     },
   },
 });

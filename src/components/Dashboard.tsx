@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { storage } from "../helpers/storage";
 import { useAppDispatch, useAppSelector } from "../store";
 import { addNote } from "../store/notes";
@@ -15,25 +15,28 @@ const Dashboard = () => {
     });
   }, [notes]);
 
-  const handleDashBoardDoubleClick = (event: React.MouseEvent) => {
+  const handleDashBoardDoubleClick = useCallback((event: React.MouseEvent) => {
     const mousePosition: Position = {
       x: event.pageX,
       y: event.pageY,
     };
+
+    const now = Date.now();
+
     dispatch(
       addNote({
-        id: `${Date.now()}`,
+        id: `${now}`,
         content: "",
         bounding: {
           width: 256,
           height: 128,
         },
         position: mousePosition,
-        createdTs: Date.now(),
-        updatedTs: Date.now(),
+        createdTs: now,
+        updatedTs: now,
       })
     );
-  };
+  }, []);
 
   return (
     <div className="dashboard-wrapper" onDoubleClick={handleDashBoardDoubleClick}>

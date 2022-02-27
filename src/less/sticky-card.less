@@ -1,5 +1,5 @@
 .sticky-card-wrapper {
-  @apply absolute flex flex-col justify-start items-start shadow-md border rounded-lg z-10 select-none;
+  @apply absolute flex flex-col justify-start items-start shadow-md border border-orange-100 rounded-lg z-10 select-none;
   /* could be custome later */
   @apply bg-orange-200;
 
@@ -13,5 +13,6 @@
 
   > .editor {
     @apply w-full grow p-2 pt-0 bg-orange-200 text-sm rounded-lg outline-none resize font-mono;
+    min-width: 128px;
   }
 }
