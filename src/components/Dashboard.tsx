@@ -25,8 +25,8 @@ const Dashboard = () => {
         id: `${Date.now()}`,
         content: "",
         bounding: {
-          width: 200,
-          height: 200,
+          width: 256,
+          height: 128,
         },
         position: mousePosition,
         createdTs: Date.now(),
