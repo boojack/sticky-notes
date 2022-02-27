@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { storage } from "../helpers/storage";
 import { useAppDispatch, useAppSelector } from "../store";
 import { addNote } from "../store/notes";
 import StickyCard from "./StickyCard";
@@ -8,9 +9,11 @@ const Dashboard = () => {
   const notes = useAppSelector((state) => state.notes.notes);
   const dispatch = useAppDispatch();
 
-  const handleDashBoardMouseMove = (event: React.MouseEvent) => {
-    // console.log(event.pageX, event.pageY);
-  };
+  useEffect(() => {
+    storage.set({
+      notes: notes,
+    });
+  }, [notes]);
 
   const handleDashBoardDoubleClick = (event: React.MouseEvent) => {
     const mousePosition: Position = {
@@ -33,8 +36,8 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard-wrapper" onMouseMove={handleDashBoardMouseMove} onDoubleClick={handleDashBoardDoubleClick}>
-      <p className="hint-text">New card with just double-click any blank space</p>
+    <div className="dashboard-wrapper" onDoubleClick={handleDashBoardDoubleClick}>
+      <p className="hint-text">Just double click on any blank space to create a card.</p>
       {notes.map((note) => {
         return <StickyCard key={`${note.id}`} note={note} />;
       })}

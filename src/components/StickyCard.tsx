@@ -101,6 +101,7 @@ const StickyCard: React.FC<Props> = (props) => {
       <textarea
         style={{ width: note.bounding.width, height: note.bounding.height }}
         className="editor"
+        placeholder="..."
         defaultValue={note.content}
         onMouseDown={handleEditorMouseDown}
         onChange={handleEditorContentChange}

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getTestNotes } from "./test";
+import { storage } from "../helpers/storage";
 
 interface NotesState {
   notes: Note[];
@@ -10,13 +10,34 @@ interface updateNoteById {
   note: Note;
 }
 
-const initialState: NotesState = {
-  notes: getTestNotes(),
+const getBlankNote = (): Note => {
+  return {
+    id: `${Date.now()}`,
+    content: "📝 input right here",
+    bounding: {
+      width: 256,
+      height: 128,
+    },
+    position: {
+      x: 100,
+      y: 100,
+    },
+    createdTs: Date.now(),
+    updatedTs: Date.now(),
+  };
+};
+
+const getInitialState = (): NotesState => {
+  const { notes } = storage.get(["notes"]);
+
+  return {
+    notes: notes ?? [getBlankNote()],
+  };
 };
 
 export const notesSlice = createSlice({
   name: "notes",
-  initialState,
+  initialState: getInitialState(),
   reducers: {
     // add note to notes
     addNote: (state, action: PayloadAction<Note>) => {
