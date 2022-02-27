@@ -7,7 +7,7 @@ interface NotesState {
 
 interface updateNoteById {
   id: UUID;
-  note: Note;
+  note: Partial<Note>;
 }
 
 const getBlankNote = (): Note => {
@@ -47,7 +47,10 @@ export const notesSlice = createSlice({
     updateNoteById: (state, action: PayloadAction<updateNoteById>) => {
       const noteIndex = state.notes.findIndex((note) => note.id === action.payload.id);
       if (noteIndex !== -1) {
-        state.notes[noteIndex] = action.payload.note;
+        state.notes[noteIndex] = {
+          ...state.notes[noteIndex],
+          ...action.payload.note,
+        };
       }
       state.notes = [...state.notes];
     },

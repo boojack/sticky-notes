@@ -30,7 +30,6 @@ const StickyCard: React.FC<Props> = (props) => {
         updateNoteById({
           id: note.id,
           note: {
-            ...note,
             position: {
               x: event.pageX - shiftX,
               y: event.pageY - shiftY,
@@ -63,7 +62,6 @@ const StickyCard: React.FC<Props> = (props) => {
         updateNoteById({
           id: note.id,
           note: {
-            ...note,
             content: event.target.value,
             updatedTs: Date.now(),
           },
