@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { useAppDispatch } from "../store";
 import { updateNoteById, deleteNoteById } from "../store/notes";
 import "../less/sticky-card.less";
@@ -10,9 +10,35 @@ interface Props {
 const StickyCard: React.FC<Props> = (props) => {
   const { note } = props;
   const dispatch = useAppDispatch();
+  const editorRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
-    // do nth
+    if (!editorRef.current) {
+      return;
+    }
+
+    const resizeObserver = new window.ResizeObserver(() => {
+      if (!editorRef.current) {
+        return;
+      }
+      dispatch(
+        updateNoteById({
+          id: note.id,
+          note: {
+            bounding: {
+              width: editorRef.current.clientWidth,
+              height: editorRef.current.clientHeight,
+            },
+            updatedTs: Date.now(),
+          },
+        })
+      );
+    });
+    resizeObserver.observe(editorRef.current);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
   }, []);
 
   const handleStickyCardDoubleClick = useCallback((event: React.MouseEvent) => {
@@ -91,6 +117,7 @@ const StickyCard: React.FC<Props> = (props) => {
         style={{ width: note.bounding.width, height: note.bounding.height }}
         className="editor"
         placeholder="..."
+        ref={editorRef}
         defaultValue={note.content}
         onMouseDown={handleEditorMouseDown}
         onChange={handleEditorContentChange}
