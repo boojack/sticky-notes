@@ -41,7 +41,7 @@ const Dashboard = () => {
   return (
     <div className="dashboard-wrapper" onDoubleClick={handleDashBoardDoubleClick}>
       <p className="hint-text" onDoubleClick={(e) => e.stopPropagation()}>
-        double-click on any blank space to create a card. Star me in <a href="https://github.com/justmemos/sticky-notes">GitHub</a>.
+        double-click on any blank space to create a card. <a href="https://github.com/justmemos/sticky-notes">GitHub</a>
       </p>
       {notes.map((note) => {
         return <StickyCard key={`${note.id}`} note={note} />;
