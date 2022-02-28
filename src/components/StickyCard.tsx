@@ -39,48 +39,99 @@ const StickyCard: React.FC<Props> = (props) => {
     return () => {
       resizeObserver.disconnect();
     };
-  }, []);
+  }, [note.id]);
 
   const handleStickyCardDoubleClick = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
   }, []);
 
-  const handleStickyCardMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    const { left, top } = event.currentTarget.getBoundingClientRect();
-    const shiftX = event.clientX - left;
-    const shiftY = event.clientY - top;
+  const handleStickyCardMouseDown = useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      const { left, top } = event.currentTarget.getBoundingClientRect();
+      const shiftX = event.clientX - left;
+      const shiftY = event.clientY - top;
 
-    const handleMouseMove = (event: MouseEvent) => {
-      dispatch(
-        updateNoteById({
-          id: note.id,
-          note: {
-            position: {
-              x: event.pageX - shiftX,
-              y: event.pageY - shiftY,
+      const handleMouseMove = (event: MouseEvent) => {
+        dispatch(
+          updateNoteById({
+            id: note.id,
+            note: {
+              position: {
+                x: event.pageX - shiftX,
+                y: event.pageY - shiftY,
+              },
+              updatedTs: Date.now(),
             },
-            updatedTs: Date.now(),
-          },
-        })
+          })
+        );
+      };
+
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener(
+        "mouseup",
+        () => {
+          document.removeEventListener("mousemove", handleMouseMove);
+        },
+        {
+          once: true,
+        }
       );
-    };
+    },
+    [note.id]
+  );
 
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener(
-      "mouseup",
-      () => {
-        document.removeEventListener("mousemove", handleMouseMove);
-      },
-      {
-        once: true,
-      }
-    );
-  }, []);
+  const handleStickyCardTouchStart = useCallback(
+    (event: React.TouchEvent<HTMLDivElement>) => {
+      const { left, top } = event.currentTarget.getBoundingClientRect();
+      const shiftX = event.touches[0].clientX - left;
+      const shiftY = event.touches[0].clientY - top;
 
-  const handleEditorMouseDown = useCallback((event) => {
+      const handleTouchMove = (event: TouchEvent) => {
+        dispatch(
+          updateNoteById({
+            id: note.id,
+            note: {
+              position: {
+                x: event.touches[0].pageX - shiftX,
+                y: event.touches[0].pageY - shiftY,
+              },
+              updatedTs: Date.now(),
+            },
+          })
+        );
+      };
+
+      document.addEventListener("touchmove", handleTouchMove);
+      document.addEventListener(
+        "touchend",
+        () => {
+          document.removeEventListener("touchmove", handleTouchMove);
+        },
+        {
+          once: true,
+        }
+      );
+    },
+    [note.id]
+  );
+
+  // stop propagation mouse down event in editor
+  const handleStopPropagation = useCallback((event) => {
     event.stopPropagation();
   }, []);
+
+  // rerender card to update its z-index
+  const handleEditorClick = useCallback(() => {
+    dispatch(
+      updateNoteById({
+        id: note.id,
+        note: {
+          updatedTs: Date.now(),
+        },
+      })
+    );
+  }, [note.id]);
 
   const handleEditorContentChange = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -94,7 +145,7 @@ const StickyCard: React.FC<Props> = (props) => {
         })
       );
     },
-    [note]
+    [note.id]
   );
 
   const handleDeleteBtnClick = useCallback(() => {
@@ -105,8 +156,9 @@ const StickyCard: React.FC<Props> = (props) => {
     <div
       className="sticky-card-wrapper"
       style={{ top: note.position.y, left: note.position.x }}
-      onMouseDown={handleStickyCardMouseDown}
       onDoubleClick={handleStickyCardDoubleClick}
+      onMouseDown={handleStickyCardMouseDown}
+      onTouchStart={handleStickyCardTouchStart}
     >
       <div className="header-container">
         <div className="btns-container">
@@ -121,8 +173,10 @@ const StickyCard: React.FC<Props> = (props) => {
         placeholder="..."
         ref={editorRef}
         defaultValue={note.content}
-        onMouseDown={handleEditorMouseDown}
+        onClick={handleEditorClick}
         onChange={handleEditorContentChange}
+        onMouseDown={handleStopPropagation}
+        onTouchStart={handleStopPropagation}
       ></textarea>
     </div>
   );
