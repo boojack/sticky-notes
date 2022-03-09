@@ -4,23 +4,11 @@
   @apply bg-orange-200;
 
   > .header-container {
-    @apply px-2 pt-1 w-full flex flex-row justify-end items-center cursor-move;
-
-    > .btns-container {
-      @apply w-auto flex flex-row justify-end items-center;
-
-      > .btn {
-        @apply text-xs px-1 rounded text-neutral-400 font-mono cursor-pointer border border-transparent hover:shadow-inner;
-
-        &.delete-btn {
-          @apply hover:text-red-400 hover:border-red-400;
-        }
-      }
-    }
+    @apply w-full h-3 flex flex-row justify-end items-center cursor-move;
   }
 
   > .editor {
-    @apply w-full grow p-2 pt-0 text-neutral-700 bg-orange-200 text-sm rounded-lg outline-none resize font-mono;
+    @apply w-full grow p-3 pt-0 text-neutral-700 bg-orange-200 text-sm rounded-lg outline-none resize font-mono;
     min-width: 196px;
     min-height: 64px;
   }

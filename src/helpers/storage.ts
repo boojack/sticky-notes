@@ -2,7 +2,7 @@
  * Define storage data type
  */
 interface StorageData {
-  notes: Note[];
+  noteList: Note[];
 }
 
 type StorageKey = keyof StorageData;

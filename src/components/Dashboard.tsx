@@ -1,19 +1,20 @@
 import React, { useCallback, useEffect } from "react";
 import { storage } from "../helpers/storage";
 import { useAppDispatch, useAppSelector } from "../store";
-import { addNote } from "../store/notes";
+import { addNote } from "../store/note";
 import StickyCard from "./StickyCard";
+import Toolbar from "./Toolbar";
 import "../less/dashboard.less";
 
 const Dashboard = () => {
-  const notes = useAppSelector((state) => state.notes.notes);
+  const noteList = useAppSelector((state) => state.note.noteList);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     storage.set({
-      notes: notes,
+      noteList: noteList,
     });
-  }, [notes]);
+  }, [noteList]);
 
   const handleDashBoardDoubleClick = useCallback((event: React.MouseEvent) => {
     const mousePosition: Position = {
@@ -38,12 +39,17 @@ const Dashboard = () => {
     );
   }, []);
 
+  const handleStopPropagation = useCallback((event) => {
+    event.stopPropagation();
+  }, []);
+
   return (
     <div className="dashboard-wrapper" onDoubleClick={handleDashBoardDoubleClick}>
-      <p className="hint-text" onDoubleClick={(e) => e.stopPropagation()}>
+      <p className="hint-text" onDoubleClick={handleStopPropagation}>
         double-click on any blank space to create a card. <a href="https://github.com/justmemos/sticky-notes">GitHub</a>
       </p>
-      {notes.map((note) => {
+      <Toolbar />
+      {noteList.map((note) => {
         return <StickyCard key={`${note.id}`} note={note} />;
       })}
     </div>

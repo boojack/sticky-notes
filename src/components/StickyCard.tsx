@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { useAppDispatch } from "../store";
-import { updateNoteById, deleteNoteById } from "../store/notes";
+import { setDraggingNote } from "../store/global";
+import { updateNoteById } from "../store/note";
 import "../less/sticky-card.less";
 
 interface Props {
@@ -41,80 +42,78 @@ const StickyCard: React.FC<Props> = (props) => {
     };
   }, [note.id]);
 
-  const handleStickyCardDoubleClick = useCallback((event: React.MouseEvent) => {
+  const handleDoubleClick = useCallback((event: React.MouseEvent) => {
     event.preventDefault();
     event.stopPropagation();
   }, []);
 
-  const handleStickyCardMouseDown = useCallback(
-    (event: React.MouseEvent<HTMLDivElement>) => {
-      const { left, top } = event.currentTarget.getBoundingClientRect();
-      const shiftX = event.clientX - left;
-      const shiftY = event.clientY - top;
+  const handleMouseDown = useCallback((event: React.MouseEvent<HTMLDivElement>) => {
+    dispatch(setDraggingNote(note));
+    const { left, top } = event.currentTarget.getBoundingClientRect();
+    const shiftX = event.clientX - left;
+    const shiftY = event.clientY - top;
 
-      const handleMouseMove = (event: MouseEvent) => {
-        dispatch(
-          updateNoteById({
-            id: note.id,
-            note: {
-              position: {
-                x: event.pageX - shiftX,
-                y: event.pageY - shiftY,
-              },
-              updatedTs: Date.now(),
+    const handleMouseMove = (event: MouseEvent) => {
+      dispatch(
+        updateNoteById({
+          id: note.id,
+          note: {
+            position: {
+              x: event.pageX - shiftX,
+              y: event.pageY - shiftY,
             },
-          })
-        );
-      };
-
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener(
-        "mouseup",
-        () => {
-          document.removeEventListener("mousemove", handleMouseMove);
-        },
-        {
-          once: true,
-        }
+            updatedTs: Date.now(),
+          },
+        })
       );
-    },
-    [note.id]
-  );
+    };
 
-  const handleStickyCardTouchStart = useCallback(
-    (event: React.TouchEvent<HTMLDivElement>) => {
-      const { left, top } = event.currentTarget.getBoundingClientRect();
-      const shiftX = event.touches[0].clientX - left;
-      const shiftY = event.touches[0].clientY - top;
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener(
+      "mouseup",
+      () => {
+        document.removeEventListener("mousemove", handleMouseMove);
+        dispatch(setDraggingNote(undefined));
+      },
+      {
+        once: true,
+      }
+    );
+  }, []);
 
-      const handleTouchMove = (event: TouchEvent) => {
-        dispatch(
-          updateNoteById({
-            id: note.id,
-            note: {
-              position: {
-                x: event.touches[0].pageX - shiftX,
-                y: event.touches[0].pageY - shiftY,
-              },
-              updatedTs: Date.now(),
+  const handleTouchStart = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
+    dispatch(setDraggingNote(note));
+    const { left, top } = event.currentTarget.getBoundingClientRect();
+    const shiftX = event.touches[0].clientX - left;
+    const shiftY = event.touches[0].clientY - top;
+
+    const handleTouchMove = (event: TouchEvent) => {
+      dispatch(
+        updateNoteById({
+          id: note.id,
+          note: {
+            position: {
+              x: event.touches[0].pageX - shiftX,
+              y: event.touches[0].pageY - shiftY,
             },
-          })
-        );
-      };
-
-      document.addEventListener("touchmove", handleTouchMove);
-      document.addEventListener(
-        "touchend",
-        () => {
-          document.removeEventListener("touchmove", handleTouchMove);
-        },
-        {
-          once: true,
-        }
+            updatedTs: Date.now(),
+          },
+        })
       );
-    },
-    [note.id]
-  );
+    };
+
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener(
+      "touchend",
+      () => {
+        document.removeEventListener("touchmove", handleTouchMove);
+        dispatch(setDraggingNote(undefined));
+      },
+      {
+        once: true,
+      }
+    );
+  }, []);
 
   // stop propagation mouse down event in editor
   const handleStopPropagation = useCallback((event) => {
@@ -131,42 +130,29 @@ const StickyCard: React.FC<Props> = (props) => {
         },
       })
     );
-  }, [note.id]);
+  }, []);
 
-  const handleEditorContentChange = useCallback(
-    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      dispatch(
-        updateNoteById({
-          id: note.id,
-          note: {
-            content: event.target.value,
-            updatedTs: Date.now(),
-          },
-        })
-      );
-    },
-    [note.id]
-  );
-
-  const handleDeleteBtnClick = useCallback(() => {
-    dispatch(deleteNoteById(note.id));
-  }, [note]);
+  const handleEditorContentChange = useCallback((event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    dispatch(
+      updateNoteById({
+        id: note.id,
+        note: {
+          content: event.target.value,
+          updatedTs: Date.now(),
+        },
+      })
+    );
+  }, []);
 
   return (
     <div
       className="sticky-card-wrapper"
       style={{ top: note.position.y, left: note.position.x }}
-      onDoubleClick={handleStickyCardDoubleClick}
-      onMouseDown={handleStickyCardMouseDown}
-      onTouchStart={handleStickyCardTouchStart}
+      onDoubleClick={handleDoubleClick}
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
     >
-      <div className="header-container">
-        <div className="btns-container">
-          <span className="btn delete-btn" onClick={handleDeleteBtnClick}>
-            Delete
-          </span>
-        </div>
-      </div>
+      <div className="header-container"></div>
       <textarea
         style={{ width: note.bounding.width, height: note.bounding.height }}
         className="editor"

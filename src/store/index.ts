@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import notesReducer from "./notes";
+import globalReducer from "./global";
+import noteReducer from "./note";
 
 const store = configureStore({
   reducer: {
-    notes: notesReducer,
+    global: globalReducer,
+    note: noteReducer,
   },
 });
 
