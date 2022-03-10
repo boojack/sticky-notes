@@ -81,40 +81,6 @@ const StickyCard: React.FC<Props> = (props) => {
     );
   }, []);
 
-  const handleTouchStart = useCallback((event: React.TouchEvent<HTMLDivElement>) => {
-    dispatch(setDraggingNote(note));
-    const { left, top } = event.currentTarget.getBoundingClientRect();
-    const shiftX = event.touches[0].clientX - left;
-    const shiftY = event.touches[0].clientY - top;
-
-    const handleTouchMove = (event: TouchEvent) => {
-      dispatch(
-        updateNoteById({
-          id: note.id,
-          note: {
-            position: {
-              x: event.touches[0].pageX - shiftX,
-              y: event.touches[0].pageY - shiftY,
-            },
-            updatedTs: Date.now(),
-          },
-        })
-      );
-    };
-
-    document.addEventListener("touchmove", handleTouchMove);
-    document.addEventListener(
-      "touchend",
-      () => {
-        document.removeEventListener("touchmove", handleTouchMove);
-        dispatch(setDraggingNote(undefined));
-      },
-      {
-        once: true,
-      }
-    );
-  }, []);
-
   // stop propagation mouse down event in editor
   const handleStopPropagation = useCallback((event) => {
     event.stopPropagation();
@@ -150,7 +116,6 @@ const StickyCard: React.FC<Props> = (props) => {
       style={{ top: note.position.y, left: note.position.x }}
       onDoubleClick={handleDoubleClick}
       onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchStart}
     >
       <div className="header-container"></div>
       <textarea
@@ -162,7 +127,6 @@ const StickyCard: React.FC<Props> = (props) => {
         onClick={handleEditorClick}
         onChange={handleEditorContentChange}
         onMouseDown={handleStopPropagation}
-        onTouchStart={handleStopPropagation}
       ></textarea>
     </div>
   );

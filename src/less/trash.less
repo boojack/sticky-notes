@@ -1,5 +1,5 @@
 .trash-wrapper {
-  @apply z-20 absolute top-1/2 -translate-y-3/4 w-96 p-0 border rounded-md shadow-lg flex flex-col justify-center items-center bg-gray-50 transition-all select-none;
+  @apply z-20 absolute top-16 w-128 max-w-full p-0 border rounded-md shadow-dialog flex flex-col justify-center items-center bg-gray-50 transition-all select-none;
 
   > .dialog-header {
     @apply w-full flex flex-row justify-between items-center p-2 px-3 border-b;
@@ -18,10 +18,10 @@
   }
 
   > .dialog-content {
-    @apply w-full h-auto p-2;
+    @apply w-full p-2 grid gap-2 grid-cols-2;
 
     > .empty-text {
-      @apply w-full text-center py-2;
+      @apply text-center py-2 col-span-3;
     }
   }
 }
