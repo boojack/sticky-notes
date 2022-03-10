@@ -1,25 +1,37 @@
 import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
-import { deleteNoteById } from "../store/note";
+import { setShowTrashDialogFlag } from "../store/global";
+import { updateNoteById } from "../store/note";
 import "../less/toolbar.less";
 
 const Toolbar = () => {
-  const draggingNote = useAppSelector((state) => state.global.draggingNote);
+  const globalState = useAppSelector((state) => state.global);
   const dispatch = useAppDispatch();
 
   const handleStopPropagation = useCallback((event) => {
     event.stopPropagation();
   }, []);
 
-  const handleMouseUp = () => {
-    if (draggingNote) {
-      dispatch(deleteNoteById(draggingNote.id));
+  const handleTrashMouseUp = () => {
+    if (globalState.draggingNote) {
+      dispatch(
+        updateNoteById({
+          id: globalState.draggingNote.id,
+          note: {
+            status: "TRASH",
+          },
+        })
+      );
     }
   };
 
+  const handleTrashClick = () => {
+    dispatch(setShowTrashDialogFlag(!globalState.showTrashDialogFlag));
+  };
+
   return (
-    <div className={`toolbar-container ${draggingNote ? "z-10" : ""}`} onDoubleClick={handleStopPropagation}>
-      <span className="bin" onMouseUp={handleMouseUp}>
+    <div className={`toolbar-container opacity-80 ${globalState.draggingNote ? "z-10" : ""}`} onDoubleClick={handleStopPropagation}>
+      <span className="action-btn" onClick={handleTrashClick} onMouseUp={handleTrashMouseUp}>
         🗑
       </span>
     </div>

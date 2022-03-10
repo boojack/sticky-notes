@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect } from "react";
-import { storage } from "../helpers/storage";
+import React, { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { addNote } from "../store/note";
 import StickyCard from "./StickyCard";
@@ -7,14 +6,8 @@ import Toolbar from "./Toolbar";
 import "../less/dashboard.less";
 
 const Dashboard = () => {
-  const noteList = useAppSelector((state) => state.note.noteList);
+  const noteList = useAppSelector((state) => state.note.noteList.filter((note) => note.status === "NORMAL"));
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    storage.set({
-      noteList: noteList,
-    });
-  }, [noteList]);
 
   const handleDashBoardDoubleClick = useCallback((event: React.MouseEvent) => {
     const mousePosition: Position = {
@@ -33,6 +26,7 @@ const Dashboard = () => {
           height: 128,
         },
         position: mousePosition,
+        status: "NORMAL",
         createdTs: now,
         updatedTs: now,
       })

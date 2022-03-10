@@ -1,0 +1,27 @@
+.trash-wrapper {
+  @apply z-20 absolute top-1/2 -translate-y-3/4 w-96 p-0 border rounded-md shadow-lg flex flex-col justify-center items-center bg-gray-50 transition-all select-none;
+
+  > .dialog-header {
+    @apply w-full flex flex-row justify-between items-center p-2 px-3 border-b;
+
+    > .title-text {
+      @apply text-lg;
+    }
+
+    > .btns-container {
+      @apply flex flex-row justify-end items-center;
+
+      > .btn {
+        @apply border rounded p-1 px-2 text-sm cursor-pointer hover:border-black;
+      }
+    }
+  }
+
+  > .dialog-content {
+    @apply w-full h-auto p-2;
+
+    > .empty-text {
+      @apply w-full text-center py-2;
+    }
+  }
+}

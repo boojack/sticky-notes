@@ -1,0 +1,21 @@
+.trash-card-wrapper {
+  @apply float-left w-1/2 flex flex-col justify-start items-start border border-orange-100 rounded-md;
+  /* could be custome later */
+  @apply bg-orange-200;
+
+  > .header-container {
+    @apply w-full p-1 h-auto flex flex-row justify-between items-center;
+
+    > .btns-container {
+      @apply flex flex-row justify-end items-center;
+
+      > .btn {
+        @apply ml-1 border border-gray-400 rounded px-1 text-gray-600 text-sm cursor-pointer hover:border-black;
+      }
+    }
+  }
+
+  > .editor {
+    @apply w-full grow p-3 pt-0 text-neutral-700 bg-orange-200 text-sm rounded-lg outline-none resize-none font-mono;
+  }
+}

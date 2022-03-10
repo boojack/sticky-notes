@@ -8,6 +8,8 @@ interface Bounding {
   height: number;
 }
 
+type Status = "NORMAL" | "TRASH";
+
 // Sticky note card data model
 interface Note {
   id: UUID;
@@ -17,6 +19,7 @@ interface Note {
   bounding: Bounding;
   // card relative position.
   position: Position;
+  status: Status;
   createdTs: Timestamp;
   updatedTs: Timestamp;
 }

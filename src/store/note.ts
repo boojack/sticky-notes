@@ -22,6 +22,7 @@ const getBlankNote = (): Note => {
       x: 100,
       y: 100,
     },
+    status: "NORMAL",
     createdTs: Date.now(),
     updatedTs: Date.now(),
   };
