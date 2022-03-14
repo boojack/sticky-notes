@@ -14,7 +14,6 @@ const Dashboard = () => {
       x: event.pageX,
       y: event.pageY,
     };
-
     const now = Date.now();
 
     dispatch(

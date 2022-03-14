@@ -2,6 +2,10 @@
   @apply absolute left-1 top-1/2 -translate-y-1/2 p-1 rounded flex flex-col justify-center items-center bg-gray-200 transition-all select-none;
 
   > .action-btn {
-    @apply w-10 h-10 flex justify-center items-center text-base rounded cursor-pointer hover:text-lg;
+    @apply w-10 h-10 flex justify-center items-center text-xl cursor-pointer hover:text-2xl;
+
+    &.trash-bin {
+      @apply border-t border-t-gray-300;
+    }
   }
 }
