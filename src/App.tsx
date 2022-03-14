@@ -11,7 +11,7 @@ const App = () => {
     storage.set({
       noteList: noteList,
     });
-  }, []);
+  }, [noteList]);
 
   return (
     <>
