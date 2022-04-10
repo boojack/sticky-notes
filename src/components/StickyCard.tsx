@@ -82,7 +82,7 @@ const StickyCard: React.FC<Props> = (props) => {
   }, []);
 
   // stop propagation mouse down event in editor
-  const handleStopPropagation = useCallback((event) => {
+  const handleStopPropagation = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
   }, []);
 
@@ -121,7 +121,7 @@ const StickyCard: React.FC<Props> = (props) => {
       <textarea
         style={{ width: note.bounding.width, height: note.bounding.height }}
         className="editor"
-        placeholder="..."
+        placeholder="Any thoughts..."
         ref={editorRef}
         defaultValue={note.content}
         onClick={handleEditorClick}

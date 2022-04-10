@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { setShowTrashDialogFlag } from "../store/global";
 import { addNote, updateNoteById } from "../store/note";
@@ -8,7 +8,7 @@ const Toolbar = () => {
   const globalState = useAppSelector((state) => state.global);
   const dispatch = useAppDispatch();
 
-  const handleStopPropagation = useCallback((event) => {
+  const handleStopPropagation = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
   }, []);
 

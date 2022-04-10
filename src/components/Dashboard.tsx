@@ -32,7 +32,7 @@ const Dashboard = () => {
     );
   }, []);
 
-  const handleStopPropagation = useCallback((event) => {
+  const handleStopPropagation = useCallback((event: React.MouseEvent) => {
     event.stopPropagation();
   }, []);
 
