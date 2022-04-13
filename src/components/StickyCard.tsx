@@ -22,12 +22,13 @@ const StickyCard: React.FC<Props> = (props) => {
       if (!editorRef.current) {
         return;
       }
+
       dispatch(
         updateNoteById({
           id: note.id,
           note: {
             bounding: {
-              width: editorRef.current.clientWidth,
+              width: editorRef.current.parentElement?.clientWidth as number,
               height: editorRef.current.clientHeight,
             },
             updatedTs: Date.now(),
