@@ -38,9 +38,13 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-wrapper" onDoubleClick={handleDashBoardDoubleClick}>
-      <p className="hint-text" onDoubleClick={handleStopPropagation}>
-        double-click on any blank space to create a card. <a href="https://github.com/justmemos/sticky-notes">GitHub</a>
-      </p>
+      <div className="hint-block" onDoubleClick={handleStopPropagation}>
+        <img className="logo-img" src="/sticky-notes.ico" alt="" />
+        <span>double-click on any blank space to create a card. </span>
+        <a href="https://github.com/justmemos/sticky-notes">
+          <img src="https://img.shields.io/github/stars/usememos/sticky-notes" alt="" />
+        </a>
+      </div>
       <Toolbar />
       {noteList.map((note) => {
         return <StickyCard key={`${note.id}`} note={note} />;

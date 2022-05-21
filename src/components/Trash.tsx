@@ -24,6 +24,9 @@ const Trash = () => {
         </div>
       </div>
       <div className="dialog-content">
+        <p className="tip-text">
+          You can delete a note by dragging and dropping it into the <span className="icon-text">🗑</span> tool.
+        </p>
         {noteList.length === 0 ? (
           <p className="empty-text">Empty</p>
         ) : (

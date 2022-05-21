@@ -1,11 +1,15 @@
 .dashboard-wrapper {
   @apply relative w-full h-full bg-sky-50 overflow-hidden;
 
-  > .hint-text {
-    @apply font-mono select-none p-2 text-sm text-neutral-400;
+  > .hint-block {
+    @apply flex flex-row justify-start items-center font-mono select-none p-2 text-sm text-neutral-400;
+
+    > .logo-img {
+      @apply w-4 h-auto mr-1;
+    }
 
     > a {
-      @apply underline hover:text-neutral-600;
+      @apply ml-2 hover:opacity-80;
     }
   }
 }
